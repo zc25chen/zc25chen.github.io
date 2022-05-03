@@ -1,0 +1,235 @@
+
+
+// First, the metadata that goes along with this webpage -- this is the stuff that shows up in the tab
+[meta title:"Life Expectancy Data(WHO)" description:"2000-2015" /]
+
+// You'll note that once we save our browser is re-loaded and our locally hosted webpage is re-generated.
+
+// We also want to update the header that appears on our post:
+[Header
+  fullWidth:true
+  title:"Life Expectancy 2000-2015(WHO)"
+  subtitle:"For Those Who Care About Health Problem Worldwide"
+  author:"Siyao_Cheng,Siyuan_Cheng,Zhangyan_Chen"
+  authorLink:""
+  date:`(new Date()).toDateString()`
+  background:"#222222"
+  color:"#ffffff"
+   /]
+
+
+## Introduction
+Many people have studied the topic of what factors can affect life expectancy. 
+Most consider only demographic variables, income composition, and mortalit, but no one has ever combined it with the immunization and human development index (Russell & Wang, 2018). 
+This dataset includes these factors and there are a lot of countries in this dataset. 
+Therefore, we can see which country is easier to reduce life expectancy, and then we can focus on this country to see the factor which can affect the life expectancy. 
+
+
+[data name:"Life_Expectancy" source:"Life_Data.csv" /]
+
+## Table of Original Dataset
+
+[Table data:Life_Expectancy /]
+
+
+## Content of the dataset
+
+The dataset has 22 columns in total. Each column has 2939 entries including the title. 
+Two of the 22 columns have the data type of string, 9 are integers, and 11 are decimal. 
+The columns with the data type of string are “Country” and “Status”. 
+The “Status” column tells the developed or developing status of a country. 
+The primary column that we focus on is “Life expectancy ”, which represents the life expectancy of people in age. 
+“Adult Mortality” is the probability of people of both sexes dying between 15 and 60 years per 1000 population. 
+“Infant deaths” is the number of infant deaths per 1000 population. 
+“Alcohol” records the alcohol consumption per capita (15+). 
+“Percentage expenditure” is the expenditure of people on health as a percentage of Gross Domestic Product per capita(%). 
+“Hepatitis B”, “Polio” and “Diphtheria” represents the immunization of corresponding diseases coverage among 1-year-olds (%). 
+“Measles” tells the number of reported Measles cases per 1000 population. 
+“BMI” is the average body mass index of the entire population. 
+“Under-five deaths” is the number of under-five deaths per 1000 population. 
+“Total expenditure” is the general government expenditure on health as a percentage of total government expenditure (%). 
+“HIV/AIDS'' reports the deaths per 1000 live birth HIV/AVIDS (0-4 years). 
+“thinness 1-19 years” and “thinness 5-9 years” tell the prevalence of thinness among children and adolescents in the corresponding age periods. 
+“Income composition of resources” is the Human Development Index in terms of income composition of resources ranging from 0 to 1. 
+"Schooling” measures the number of years of Schooling.
+
+
+
+
+## Average Life Expectancy by Country
+This graph shows the average life expectancy in each country. 
+The "Country status" button at the bottom helps us see which countries are developing countries and developing countries. 
+The orange are developing countries, and the blue are developing countries. 
+We can see that developing countries generally have a higher life expectancy. 
+The "Country" button on the bottom can changes the color of each country.
+
+
+
+
+[var name:"colorBy3" value:`{}` /]
+
+[IdyllVegaLite data:Life_Expectancy spec:`{
+  width: 2000,
+  height: 300,
+  mark: "bar",
+  encoding: {
+    x: {field: "Country", type: "nominal"},
+    y: {field: "Life expectancy", aggregate:"average", 
+        type: "quantitative", title:"Average Life Expectancy"
+    },
+    color: colorBy3 
+  }
+}` /]
+
+Color by:
+ [button onClick:`colorBy3 = {}` ]None[/button]
+ [button onClick:`colorBy3 = {field: 'Status', type: 'nominal'}` ]Country Status [/button]
+ [button onClick:`colorBy3 = {field: 'Country', type: 'nominal', scale:{"scheme":"category20"}}` ]Country[/button]
+
+## Health Index, Worldwide Average by Year
+This graph shows the changes in most of all variables in our dataset each year. 
+At the top is an interaction, which can replace different variables. 
+The bottom "Country status" displays the status of the country. 
+Developed country mark as blue, developing country marks as orange. 
+As we can see from the graph, most of the variables decrease with the increase of the year.
+
+
+
+
+[var name:"colorBy" value:`{}` /]
+
+[var name:"selectVal" value:"Adult Mortality" /]
+[Select value:selectVal options:`['Adult Mortality', 'infant deaths',
+                                  'Alcohol','percentage expenditure',
+                                  'Hepatitis B','Measles','Life expectancy',
+                                  'BMI','under-five deaths',
+                                  'Polio','Total expenditure',
+                                  'Diphtheria','HIV/AID','GDP',
+                                  'Population','thinness  1-19 years',
+                                  'thinness 5-9 years','Income composition of resources','Schooling' ]`  /],
+
+[IdyllVegaLite data:Life_Expectancy spec:`{
+  width: 400,
+  height: 300,
+  mark: "line",
+  encoding: {
+    x: {field: "Year", type: "nominal"},
+    y: {field: selectVal, aggregate:"average", 
+        type: "quantitative", title:"Number of Reported Case"
+    },
+    color: colorBy 
+  }
+}` /]
+
+
+Color by:
+ [button onClick:`colorBy = {}` ]None[/button]
+ [button onClick:`colorBy = {field: 'Status', type: 'nominal'}` ]Country Status [/button]
+
+
+
+
+
+
+
+## Choice of Health Index in the Country of Your Interest
+This chart shows the relationship between all variables of each country and year. 
+First you can choose a health index from the dropbox. 
+Then enter the name of the Country in the textbox below to show the index of your choice in that country. 
+This chart shows the relationship between all variables of each country and year. 
+It's kind of a more concrete analysis of the last visualization. 
+Therefore, when we identify which countries have the smaller life expectancy, we can use this graph to analyze the factors.
+
+
+[var name:"textVal" value:"Enter Your Country of Interest" /]
+
+[var name:"selectVal" value:"Adult Mortality" /]
+[Select value:selectVal options:`['Adult Mortality', 'infant deaths',
+                                  'Alcohol','percentage expenditure',
+                                  'Hepatitis B','Measles','Life expectancy',
+                                  'BMI','under-five deaths',
+                                  'Polio','Total expenditure',
+                                  'Diphtheria','HIV/AID','GDP',
+                                  'Population','thinness  1-19 years',
+                                  'thinness 5-9 years','Income composition of resources','Schooling' ]`  /],
+
+[IdyllVegaLite data:Life_Expectancy spec:`{
+  width: 400,
+  height: 300,
+  transform:[{filter:{"field":"Country","equal":textVal}}],
+  mark: "line",
+  encoding: {
+    x: {field: "Year", type: "nominal"},
+    y: {field: selectVal, aggregate:"average", 
+        type: "quantitative", title:"Value"
+    },
+  }
+}` /]
+
+[TextInput value:textVal /]
+
+
+
+## Worldwide Average by Life Expectancy 
+Here is an additional diagram, which we can click on Interaction above to see better what factors affect life expectancy.
+
+
+
+
+[var name:"selectVal" value:"GDP" /]
+[Select value:selectVal options:`['GDP', 'infant deaths',
+                                  'Alcohol','percentage expenditure',
+                                  'Hepatitis B','Measles',
+                                  'BMI','under-five deaths',
+                                  'Polio','Total expenditure',
+                                  'Diphtheria','HIV/AID','Adult Mortality',
+                                  'Population','thinness  1-19 years',
+                                  'thinness 5-9 years','Income composition of resources','Schooling' ]`  /],
+
+[IdyllVegaLite data:Life_Expectancy spec:`{
+  width: 400,
+  height: 300,
+  mark: "line",
+  encoding: {
+    x: {field: "Life expectancy", type: "quantitative"},
+    y: {field: selectVal, aggregate:"average", 
+        type: "quantitative", title:"Value"
+    }
+  }
+}` /]
+
+## Conclusion
+From the conclusion of the graph, as the year increases, people's average life expectancy becomes higher than before. 
+Also, people in developed countries have a higher life expectancy because they have low adult mortality and infant Deaths. 
+In addition, they will have high BMI, Polio, Total expenditure, GDP, and income composition of resources. 
+When we focus specifically on a country with a low life expectancy. 
+We can see that low adult mortality, percentage expenditure, measles, and GDP are obvious factors that can reduce the average life expectancy.
+
+
+
+## Future work
+The graph we design does not show which countries' life expectancy is declining or increasing, so we will consider adding this graph in the future. 
+Also, because of time limitations, there's a lot of analysis we haven't done yet. 
+In the future, we will consider whether there is an effect between each of the variables, and then compare the impact between each variable and use this result to compare the impact of life expectancy. 
+Furthermore, we think our dataset can also add more variables to make our conclusions more comprehensive. 
+
+
+## Contributions 
+Zhangyan Chen searches for some information about our life expectancy dataset online. 
+After that, he improved the dataset so that we could create the graph easily. 
+He also creates the first two graphs on idyll. In addition, he writes the conclusion part on the idyll.
+
+Siyao Cheng creates the third graph about the “Choice of Health Index in the Country of Your Interest” on idyll. 
+She also writes the content of the dataset for us. 
+Furthermore, she will be the presenter on Tuesday.
+
+Siyuan Cheng creates the last graph about “Worldwide Average by Life Expectancy."  
+He also contributes to writing the description for each visualization. 
+Moreover, he writes the introduction and future work for this project. 
+
+
+
+## References 
+Russell, D., & Wang, D. (2018, February 10). Life expectancy (WHO). Kaggle.com. Retrieved April 28, 2022, from https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who 
+
+
